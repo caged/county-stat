@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+  echo "Usage: $0 [-d database name]" 1>&2; exit 1;
+}
+
+while getopts ":d:" opt; do
+  case ${opt} in
+    d) db_name=$OPTARG;;
+    *) usage;;
+  esac
+done
+
+if [[ -z $db_name  ]]; then usage; fi
+
+dropdb --if-exists -i $db_name
+createdb $db_name
+psql -c 'create extension postgis' $db_name
+
+# Download and extract data
+make data/gdb/tiger/acs_2013_5yr_county.gdb
+
+# Import ACS geography and data.  This will create multiple tables to support ACS data.
+ogr2ogr -t_srs 'EPSG:4326' --config PG_USE_COPY YES -append -f PGDump /dev/stdout data/gdb/tiger/acs_2013_5yr_county.gdb/ | psql $db_name
+
+# Import helper functions
+psql -f sql/_median.sql $db_name
+psql -f sql/_array_sort.sql $db_name
+psql -f sql/_percentile_cont.sql $db_name

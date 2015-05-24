@@ -1,0 +1,20 @@
+#!/bin/bash
+
+db_name=$1
+tables=`psql --no-align --quiet -t -c "select table_name from information_schema.tables where table_schema = 'public' and table_name like 'x%'" $db_name`
+
+for table in $tables; do \
+  echo ""
+  echo $table
+  columns=`psql --no-align --quiet -t -c "select string_agg(quote_literal(column_name), ',') from information_schema.columns where table_schema = 'public' and table_name = '$table'" $db_name`
+  # echo "select lower(short_name) as name, full_name as desc from county_metadata_2013 where lower(short_name) in($columns)"
+  details=`psql -c "select lower(short_name) as name, full_name as desc from county_metadata_2013 where lower(short_name) in($columns) and full_name not like '%Margin of Error%'" $db_name`
+  echo $details
+done
+
+# SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';
+#
+# SELECT *
+# FROM information_schema.columns
+# WHERE table_schema = 'public'
+#   AND table_name   = 'x01_age_and_sex'
