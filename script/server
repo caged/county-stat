@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'sinatra'
+require 'dotenv'
+require 'pg'
+require 'csv'
+
+Dotenv.load
+
+DB = PG.connect(dbname: ENV['COUNTY_STAT_DB_NAME'])
+# DB.type_map_for_queries = PG::BasicTypeMapForQueries.new DB
+set :root, File.join(File.dirname(__FILE__), '..')
+set :views, Proc.new { File.join(root, 'html') }
+set :public_folder, Proc.new { File.join(root, 'html') }
+
+def demographics
+  @demographics ||= DB.exec <<-STR
+    select
+      table_name,
+      column_name,
+      full_name as desc
+    from
+      information_schema.columns
+    inner join county_metadata_2013 c on lower(column_name) = lower(c.short_name)
+    where
+      table_schema = 'public' and
+      table_name like 'x%' and
+      full_name not like '%Margin of Error%'
+  STR
+end
+
+get '/' do
+  @demographics = demographics
+  erb :index
+end
+
+get '/:table/:column.csv' do
+  content_type 'application/csv'
+
+  table = DB.escape_string(params[:table])
+  column = DB.escape_string(params[:column])
+  puts "select b.geoid, b.name, #{column} from #{table} a inner join acs_2013_5yr_county b on a.ogc_fid = b.ogc_fid"
+  query = DB.exec("select b.geoid, b.name, #{column} from #{table} a inner join acs_2013_5yr_county b on a.ogc_fid = b.ogc_fid")
+  csv_str = CSV.generate do |csv|
+    csv << %w(id name value)
+    query.values.map { |row| csv << row }
+  end
+
+  csv_str
+end
