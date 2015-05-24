@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+  <title>County Stat</title>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <style media="screen">
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font: 12px OpenSans, Helvetica;
+    }
+
+    /* STRUCTURE */
+    .header {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header-title {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      font-family: OpenSans;
+      font-size: 18px;
+    }
+
+    .hamburger {
+      border: 0;
+      background: #fff;
+      color: #3EA86B;
+      outline: none;
+    }
+
+    .hamburger:before {
+      content:'\2630';
+      font-size: 20px;
+    }
+
+    .hamburger:hover {
+      color: #328656;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: -300px;
+      top: 52px;
+      bottom: 0;
+      background: #fff;
+      overflow-y: scroll;
+      border-right: 1px solid #ddd;
+      visibility: hidden;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s;
+    }
+
+    .sidebar.expanded {
+      visibility: visible;
+      -webkit-transform: translate3d(300px, 0, 0);
+      transform: translate3d(300px, 0, 0);
+    }
+
+    .demographics {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .demographic-link {
+      display: block;
+      text-decoration: none;
+      color: #333;
+      padding: 5px 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .demographic-link:hover {
+      background: #eee;
+    }
+
+    .canvas {
+      width: 100vw;
+      min-height: 100vh;
+    }
+
+    svg {
+      display: block;
+    }
+
+    .land {
+      stroke: none;
+      fill: #333;
+      fill: #e5e9e0;
+    }
+
+    .county-mesh  {
+      fill: none;
+      stroke-width: 1;
+      stroke: #fff;
+      stroke-opacity: 0.1;
+    }
+
+    .counties path {
+      fill: none;
+      stroke-width: 0;
+    }
+
+    .states {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 0.5;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <button class="hamburger js-hamburger"></button>
+    <h1 class="header-title">County Stat</h1>
+  </header>
+  <aside class="sidebar js-sidebar">
+    <ol class="demographics">
+      <% @demographics.each do |demographic| %>
+      <li>
+        <a class="demographic-link" href="/<%= demographic['table_name'] %>/<%= demographic['column_name'] %>">
+          <%= demographic['table_name'] %> /
+          <%= demographic['column_name'] %>
+        </a>
+      </li>
+      <% end %>
+    </ol>
+  </aside>
+  <div class="js-canvas canvas"></div>
+  <script src="/map.js" charset="utf-8"></script>
+</body>
+</html>
