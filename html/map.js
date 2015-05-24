@@ -26,14 +26,17 @@ var vis = d3.select('.js-canvas').append('svg')
 .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
-d3.json('us-10m.json', function(us) {
+d3.json('/us-10m.json', function(us) {
   var land = topojson.feature(us, us.objects.land),
       states = topojson.mesh(us, us.objects.states, function(a, b) { return a.id !== b.id; }),
       mesh = topojson.mesh(us, us.objects.counties, function(a, b) { return a !== b && (a.id / 1000 | 0) === (b.id / 1000 | 0); }),
       counties = topojson.feature(us, us.objects.counties).features
 
+  var table = el.attr('data-table') || 'x00_counts',
+      column = el.attr('data-column') || 'b00002e1'
+
   function format(row) { row.value = +row.value; return row }
-  d3.csv('/x00_counts/b00002e1.csv', format, function(data) {
+  d3.csv('/csv/' + table + '/' + column + '.csv', format, function(data) {
 
     counties.forEach(function(c) {
       var fips = c.id,
