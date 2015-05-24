@@ -27,6 +27,19 @@
       font-size: 18px;
     }
 
+    .header-subtitle {
+      display: inline-block;
+      margin: 0 0 0 10px;
+      padding: 0;
+      font-size: 12px;
+      color: #555;
+      font-weight: normal;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 80vw;
+    }
+
     .hamburger {
       border: 0;
       background: #fff;
@@ -48,12 +61,12 @@
       left: -300px;
       top: 52px;
       bottom: 0;
-      background: #fff;
+      background: #3EA86B;
       overflow-y: scroll;
-      border-right: 1px solid #ddd;
+      border-right: 1px solid #328756;
       visibility: hidden;
-      -webkit-transition: all 0.3s;
-      transition: all 0.3s;
+      -webkit-transition: all 0.5s;
+      transition: all 0.5s;
     }
 
     .sidebar.expanded {
@@ -71,18 +84,18 @@
     .demographic-link {
       display: block;
       text-decoration: none;
-      color: #333;
-      padding: 5px 10px;
-      border-bottom: 1px solid #eee;
+      color: #fff;
+      padding: 10px;
+      border-bottom: 1px solid #3a9d64;
     }
 
     .demographic-link:hover {
-      background: #eee;
+      color: #E8D151;
     }
 
     .canvas {
       width: 100vw;
-      min-height: 100vh;
+      min-height: 90vh;
     }
 
     svg {
@@ -119,6 +132,7 @@
   <header class="header">
     <button class="hamburger js-hamburger"></button>
     <h1 class="header-title">County Stat</h1>
+    <h2 class="header-subtitle"><%= @column_info['full_name'] %></h2>
   </header>
   <aside class="sidebar js-sidebar">
     <ol class="demographics">
@@ -132,7 +146,7 @@
       <% end %>
     </ol>
   </aside>
-  <div class="js-canvas canvas"></div>
+  <div class="js-canvas canvas" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>"></div>
   <script src="/map.js" charset="utf-8"></script>
 </body>
 </html>

@@ -34,13 +34,21 @@ get '/' do
   erb :index
 end
 
-get '/:table/:column.csv' do
+get '/:table/:column' do
+  column = DB.escape_string(params[:column])
+
+  @demographics = demographics
+  @column_info = DB.exec("select * from county_metadata_2013 where lower(short_name) = '#{column}'").first
+  erb :index
+end
+
+get '/csv/:table/:column.csv' do
   content_type 'application/csv'
 
   table = DB.escape_string(params[:table])
   column = DB.escape_string(params[:column])
   puts "select b.geoid, b.name, #{column} from #{table} a inner join acs_2013_5yr_county b on a.ogc_fid = b.ogc_fid"
-  query = DB.exec("select b.geoid, b.name, #{column} from #{table} a inner join acs_2013_5yr_county b on a.ogc_fid = b.ogc_fid")
+  query = DB.exec("select b.geoid, b.name, #{column} from #{table} a inner join acs_2013_5yr_county b on a.geoid = b.geoid_data where statefp not in('72')")
   csv_str = CSV.generate do |csv|
     csv << %w(id name value)
     query.values.map { |row| csv << row }
