@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+  echo "Usage: $0 [-d database name] [-t table name] [-c column name]" 1>&2; exit 1;
+}
+
+while getopts ":d:t:c:" opt; do
+  case ${opt} in
+    d) db_name=$OPTARG;;
+    t) table=$OPTARG;;
+    c) column=$OPTARG;;
+    *) usage;;
+  esac
+done
+
+if [[ -z $db_name  ]]; then usage; fi
+
+psql -c "SELECT b.geoid, b.statefp, b.name, $column \
+  from $table a \
+  inner join acs_2013_5yr_county b on a.geoid = b.geoid_data \
+  where statefp not in('72')
+  order by 4 desc" $db_name
