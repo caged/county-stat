@@ -1,0 +1,19 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $0 [-d database name] [-t table name]" 1>&2; exit 1;
+}
+
+while getopts ":d:t:c:" opt; do
+  case ${opt} in
+    d) db_name=$OPTARG;;
+    t) table=$OPTARG;;
+    *) usage;;
+  esac
+done
+
+if [[ -z $db_name  ]]; then usage; fi
+
+columns=`psql --no-align --quiet -t -c "select string_agg(quote_literal(column_name), ',') from information_schema.columns where table_schema = 'public' and table_name = '$table'" $db_name`
+# echo "select lower(short_name) as name, full_name as desc from county_metadata_2013 where lower(short_name) in($columns)"
+psql -c "select lower(short_name) as name, full_name as desc from county_metadata_2013 where lower(short_name) in($columns) and full_name not like '%Margin of Error%'" $db_name
