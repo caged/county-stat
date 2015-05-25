@@ -17,8 +17,11 @@ done
 
 if [[ -z $db_name  ]]; then usage; fi
 
-psql -c "SELECT b.geoid, b.statefp, b.name, $column \
+psql -c "SELECT b.geoid, b.statefp, b.name, $column, \
+  (select b01003e1 from x01_age_and_sex x where x.geoid = b.geoid_data limit 1) as population, \
+  round(100000 * ($column::numeric / (select b01003e1 from x01_age_and_sex where x01_age_and_sex.geoid = b.geoid_data limit 1)), 2) as per_100k \
   from $table a \
   inner join acs_2013_5yr_county b on a.geoid = b.geoid_data \
-  where statefp not in('72')
-  order by 4 desc" $db_name
+  where statefp not in('72') and \
+  $column is not null \
+  order by 6 desc" $db_name
