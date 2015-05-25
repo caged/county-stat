@@ -3,7 +3,6 @@
 <head>
   <title>County Stat</title>
   <meta charset="utf-8">
-  <script src="http://d3js.org/queue.v1.min.js" charset="utf-8"></script>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
   <link rel="stylesheet" href="/styles.css" charset="utf-8">
@@ -16,9 +15,12 @@
   </header>
   <aside class="sidebar js-sidebar">
     <ol class="demographics">
-      <% @demographics.each do |demographic| %>
+      <% @demographics.entries.uniq { |d| d['table_name'] }.each do |demographic| %>
       <li>
-        <a class="demographic-link" href="/<%= demographic['table_name'] %>/<%= demographic['column_name'] %>">
+        <a  class="demographic-link js-stat-link"
+            data-table="<%= demographic['table_name'] %>"
+            data-column="<%= demographic['column_name'] %>"
+            href="/<%= demographic['table_name'] %>/<%= demographic['column_name'] %>">
           <%= demographic['table_name'] %> /
           <%= demographic['column_name'] %>
           <div class="details"><%= demographic['desc'][0..40] %></div>
@@ -35,6 +37,8 @@
       <div class="js-histogram histogram section"></div>
     </aside>
   </div>
-  <script src="/map.js" charset="utf-8"></script>
+  <script src="/js/app.js" charset="utf-8"></script>
+  <script src="/js/map.js" charset="utf-8"></script>
+  <script src="/js/scatter.js" charset="utf-8"></script>
 </body>
 </html>
