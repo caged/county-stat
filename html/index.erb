@@ -5,6 +5,11 @@
   <meta charset="utf-8">
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script>
+    window.cstat = {
+      dispatch: d3.dispatch('statchange', 'geodata')
+    }
+  </script>
   <link rel="stylesheet" href="/styles.css" charset="utf-8">
 </head>
 <body>
