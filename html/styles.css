@@ -7,7 +7,7 @@ aside,section {
 body {
   margin: 0;
   font: 12px OpenSans, Helvetica;
-  background: #eee;
+  background: #eae9e7;
 }
 
 /*----------------------------------------------
@@ -29,8 +29,8 @@ body {
   overflow-y: scroll;
   border-right: 1px solid #328756;
   visibility: hidden;
-  -webkit-transition: all 0.5s;
-  transition: all .5s;
+  -webkit-transition: all 0.3s;
+  transition: all .3s;
 }
 
 .container {
@@ -145,6 +145,11 @@ body {
   border-left: 0;
 }
 
+/*----------------------------------------------
+ * map
+ *---------------------------------------------- */
+
+
 svg {
   display: block;
 }
@@ -153,13 +158,11 @@ svg {
   fill: #fff;
   stroke: #fff;
   stroke-width: 1;
+  shape-rendering: crispedges;
 }
 
-.county-mesh  {
-  fill: none;
-  stroke-width: 1;
-  stroke: #fff;
-  stroke-opacity: 0.1;
+.counties path {
+  fill: #dddcda;
 }
 
 .states {
