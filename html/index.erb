@@ -3,130 +3,10 @@
 <head>
   <title>County Stat</title>
   <meta charset="utf-8">
+  <script src="http://d3js.org/queue.v1.min.js" charset="utf-8"></script>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
-  <style media="screen">
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font: 12px OpenSans, Helvetica;
-    }
-
-    /* STRUCTURE */
-    .header {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .header-title {
-      margin: 0;
-      padding: 0;
-      display: inline-block;
-      font-family: OpenSans;
-      font-size: 18px;
-    }
-
-    .header-subtitle {
-      display: inline-block;
-      margin: 0 0 0 10px;
-      padding: 0;
-      font-size: 12px;
-      color: #555;
-      font-weight: normal;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      max-width: 80vw;
-    }
-
-    .hamburger {
-      border: 0;
-      background: #fff;
-      color: #3EA86B;
-      outline: none;
-    }
-
-    .hamburger:before {
-      content:'\2630';
-      font-size: 20px;
-    }
-
-    .hamburger:hover {
-      color: #328656;
-    }
-
-    .sidebar {
-      position: fixed;
-      left: -300px;
-      top: 52px;
-      bottom: 0;
-      background: #3EA86B;
-      overflow-y: scroll;
-      border-right: 1px solid #328756;
-      visibility: hidden;
-      -webkit-transition: all 0.5s;
-      transition: all 0.5s;
-    }
-
-    .sidebar.expanded {
-      visibility: visible;
-      -webkit-transform: translate3d(300px, 0, 0);
-      transform: translate3d(300px, 0, 0);
-    }
-
-    .demographics {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .demographic-link {
-      display: block;
-      text-decoration: none;
-      color: #fff;
-      padding: 10px;
-      border-bottom: 1px solid #3a9d64;
-    }
-
-    .demographic-link:hover {
-      color: #E8D151;
-    }
-
-    .canvas {
-      width: 100vw;
-      min-height: 90vh;
-    }
-
-    svg {
-      display: block;
-    }
-
-    .land {
-      stroke: none;
-      fill: #333;
-      fill: #e5e9e0;
-    }
-
-    .county-mesh  {
-      fill: none;
-      stroke-width: 1;
-      stroke: #fff;
-      stroke-opacity: 0.1;
-    }
-
-    .counties path {
-      fill: none;
-      stroke-width: 0;
-    }
-
-    .states {
-      fill: none;
-      stroke: #fff;
-      stroke-width: 0.5;
-    }
-
-  </style>
+  <link rel="stylesheet" href="/styles.css" charset="utf-8">
 </head>
 <body>
   <header class="header">
@@ -141,12 +21,20 @@
         <a class="demographic-link" href="/<%= demographic['table_name'] %>/<%= demographic['column_name'] %>">
           <%= demographic['table_name'] %> /
           <%= demographic['column_name'] %>
+          <div class="details"><%= demographic['desc'][0..40] %></div>
         </a>
       </li>
       <% end %>
     </ol>
   </aside>
-  <div class="js-canvas canvas" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>"></div>
+  <div class="container">
+    <div class="js-canvas canvas" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>"></div>
+    <aside class="stats">
+      <div class="js-properties properties section"></div>
+      <div class="js-scatter scatter section"></div>
+      <div class="js-histogram histogram section"></div>
+    </aside>
+  </div>
   <script src="/map.js" charset="utf-8"></script>
 </body>
 </html>

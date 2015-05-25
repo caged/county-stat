@@ -1,0 +1,168 @@
+* { box-sizing: border-box; }
+
+aside,section {
+  display: block;
+}
+
+body {
+  margin: 0;
+  font: 12px OpenSans, Helvetica;
+  background: #eee;
+}
+
+/*----------------------------------------------
+ * =structure
+ *---------------------------------------------- */
+
+.header {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+}
+
+.sidebar {
+  position: fixed;
+  left: -315px;
+  top: 52px;
+  bottom: 0;
+  background: #3EA86B;
+  overflow-y: scroll;
+  border-right: 1px solid #328756;
+  visibility: hidden;
+  -webkit-transition: all 0.5s;
+  transition: all .5s;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.canvas {
+  flex: 4;
+  height: 100vh;
+}
+
+.stats {
+  flex: 1;
+  height: 100vh;
+  background: #ececec;
+  border-left: 1px solid #e1e1e1;
+}
+
+/*----------------------------------------------
+ * header
+ *---------------------------------------------- */
+
+ .header-title {
+   margin: 0;
+   padding: 0;
+   display: inline-block;
+   font-family: OpenSans;
+   font-size: 18px;
+ }
+
+ .header-subtitle {
+   display: inline-block;
+   margin: 0 0 0 10px;
+   padding: 0;
+   font-size: 12px;
+   color: #555;
+   font-weight: normal;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+   overflow: hidden;
+   max-width: 80vw;
+ }
+
+ .hamburger {
+   border: 0;
+   background: #fff;
+   color: #3EA86B;
+   outline: none;
+   cursor: pointer;
+ }
+
+ .hamburger:before {
+   content:'\2630';
+   font-size: 20px;
+ }
+
+ .hamburger:hover {
+   color: #328656;
+ }
+
+ /*----------------------------------------------
+  * sidebar
+  *---------------------------------------------- */
+
+.sidebar.expanded {
+  visibility: visible;
+  -webkit-transform: translate3d(315px, 0, 0);
+  transform: translate3d(315px, 0, 0);
+}
+
+.demographics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.demographic-link {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #3a9d64;
+}
+
+.demographic-link:hover {
+  color: #E8D151;
+}
+
+.details {
+  overflow: hidden;
+  opacity: 0.5;
+}
+
+/*----------------------------------------------
+ * stat sidebar
+ *---------------------------------------------- */
+
+.properties {
+
+}
+
+.properties table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.properties td {
+  padding: 10px;
+  border: 1px solid #e1e1e1;
+  border-left: 0;
+}
+
+svg {
+  display: block;
+}
+
+.land {
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 1;
+}
+
+.county-mesh  {
+  fill: none;
+  stroke-width: 1;
+  stroke: #fff;
+  stroke-opacity: 0.1;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+}
