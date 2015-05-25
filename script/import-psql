@@ -25,6 +25,9 @@ make data/gdb/tiger/acs_2013_5yr_county.gdb
 # Import ACS geography and data.  This will create multiple tables to support ACS data.
 ogr2ogr -t_srs 'EPSG:4326' --config PG_USE_COPY YES -append -f PGDump /dev/stdout data/gdb/tiger/acs_2013_5yr_county.gdb/ | psql $db_name
 
+# Create indexes
+psql -c 'create index geoid_data_idx on acs_2013_5yr_county(geoid_data)' $dbname
+
 # Import helper functions
 psql -f sql/_median.sql $db_name
 psql -f sql/_array_sort.sql $db_name
