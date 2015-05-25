@@ -8,6 +8,10 @@ require 'csv'
 Dotenv.load
 
 DB = PG.connect(dbname: ENV['COUNTY_STAT_DB_NAME'])
+
+POPULATION_COLUMN='b01003e1'
+POPULATION_TABLE='x01_age_and_sex'
+
 # DB.type_map_for_queries = PG::BasicTypeMapForQueries.new DB
 set :root, File.join(File.dirname(__FILE__), '..')
 set :views, Proc.new { File.join(root, 'html') }
@@ -26,7 +30,28 @@ def demographics
       table_schema = 'public' and
       table_name like 'x%' and
       full_name not like '%Margin of Error%'
+    order by 1,2
   STR
+end
+
+def query_for(table, column, normalize = true)
+  table = DB.escape_string(table)
+  column = DB.escape_string(column)
+
+  query = "select g.geoid as id, g.statefp, g.name, coalesce(x.#{column}, 0) as value, "
+  query += "(select #{POPULATION_COLUMN} from #{POPULATION_TABLE} where #{POPULATION_TABLE}.geoid = g.geoid_data limit 1) as population"
+
+  if normalize
+    query += ", round(100000 * (#{column}::numeric / (select #{POPULATION_COLUMN} from #{POPULATION_TABLE} where #{POPULATION_TABLE}.geoid = g.geoid_data limit 1)), 2) as per_100k "
+  end
+
+  query += "from #{table} x "
+  query += "inner join acs_2013_5yr_county g on x.geoid = g.geoid_data "
+  query += "where statefp not in('72')"
+
+  puts query
+
+  query
 end
 
 get '/' do
@@ -45,12 +70,9 @@ end
 get '/csv/:table/:column.csv' do
   content_type 'application/csv'
 
-  table = DB.escape_string(params[:table])
-  column = DB.escape_string(params[:column])
-  puts "select b.geoid, b.name, #{column} from #{table} a inner join acs_2013_5yr_county b on a.ogc_fid = b.ogc_fid"
-  query = DB.exec("select b.geoid, b.name, #{column} from #{table} a inner join acs_2013_5yr_county b on a.geoid = b.geoid_data where statefp not in('72')")
+  query = DB.exec(query_for(params[:table], params[:column]))
   csv_str = CSV.generate do |csv|
-    csv << %w(id name value)
+    csv << query.fields
     query.values.map { |row| csv << row }
   end
 
