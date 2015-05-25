@@ -27,7 +27,7 @@
       <% end %>
     </ol>
   </aside>
-  <div class="container">
+  <div class="container js-container" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>">
     <div class="js-canvas canvas" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>"></div>
     <aside class="stats">
       <div class="js-properties properties section"></div>
