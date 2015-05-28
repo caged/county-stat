@@ -156,15 +156,19 @@ body {
 /*----------------------------------------------
  * properties
  *---------------------------------------------- */
+.section {
+  border-bottom: 1px solid #ccc;
+  min-height: 100px;
+}
 
 .description {
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
+  padding: 20px;
 }
 
 .property-list {
   border-collapse: collapse;
   width: 100%;
+  border: none;
 }
 
 .property-list td, .property-list th {
@@ -172,6 +176,12 @@ body {
   border: 1px solid #e1e1e1;
   border-left: 0;
   text-alin: left;
+}
+
+.property-list tr:first-child td,
+.property-list tr:last-child td,
+.property-list tr:first-child th {
+  border: none;
 }
 
 .property-list th {
