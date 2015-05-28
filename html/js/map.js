@@ -25,7 +25,7 @@ cstat.dispatch.on('geodata', function(err, us) {
   let alpha = d3.scale.linear()
     .range([0.8, 1])
 
-  let vis = d3.select('.js-canvas').append('svg')
+  let vis = el.append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.bottom + margin.top)
   .append('g')
