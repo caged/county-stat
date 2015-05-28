@@ -20,6 +20,17 @@
     })
   })
 
+  d3.select('body').on('keyup', function() {
+    if(d3.event.keyCode == 27)
+      d3.select('.js-sidebar')
+        .classed('expanded', false)
+
+    if(d3.event.keyCode == 83)
+      d3.select('.js-sidebar').classed('expanded', function(d) {
+        return !d3.select(this).classed('expanded')
+      })
+  })
+
   // Reload map data when using back and forward buttons
   d3.select(window).on('popstate', function() {
     let state = d3.event.state,
