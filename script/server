@@ -29,7 +29,7 @@ def demographics
     where
       table_schema = 'public' and
       table_name like 'x%' and
-      full_name not like '%Margin of Error%'
+      lower(full_name) not like '%margin of error%'
     order by 1,2
   STR
 end
