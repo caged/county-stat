@@ -54,16 +54,22 @@ def query_for(table, column, normalize = true)
   query
 end
 
+def column_info(col)
+  column = DB.escape_string(params[:column])
+  DB.exec("select * from county_metadata_2013 where lower(short_name) = '#{column}'").first
+end
+
 get '/' do
+  params[:table] ||= 'x00_counts'
+  params[:column] ||= 'b00002e1'
+  @column_info = column_info(params[:column])
   @demographics = demographics
   erb :index
 end
 
 get '/:table/:column' do
-  column = DB.escape_string(params[:column])
-
+  @column_info = column_info(params[:column])
   @demographics = demographics
-  @column_info = DB.exec("select * from county_metadata_2013 where lower(short_name) = '#{column}'").first
   erb :index
 end
 
