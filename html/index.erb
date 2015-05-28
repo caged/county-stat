@@ -16,34 +16,37 @@
   <header class="header">
     <button class="hamburger js-hamburger"></button>
     <h1 class="header-title">County Stat</h1>
-    <h2 class="header-subtitle"><%= @column_info['full_name'] %></h2>
   </header>
   <aside class="sidebar js-sidebar">
     <ol class="demographics">
-      <% @demographics.entries.uniq { |d| d['table_name'] }.each do |demographic| %>
-      <li>
+      <% @demographics.each do |demographic| %>
+      <li class="<%= demographic['table_name'][0..2] %>">
         <a  class="demographic-link js-stat-link"
             data-table="<%= demographic['table_name'] %>"
             data-column="<%= demographic['column_name'] %>"
+            title="<%= demographic['desc'].sub(' -- (Estimate)', '') %>"
             href="/<%= demographic['table_name'] %>/<%= demographic['column_name'] %>">
           <%= demographic['table_name'] %> /
           <%= demographic['column_name'] %>
-          <div class="details"><%= demographic['desc'][0..40] %></div>
+          <div class="details"><%= demographic['desc'][0..42] %></div>
         </a>
       </li>
       <% end %>
     </ol>
   </aside>
-  <div class="container js-container" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>">
-    <div class="js-canvas canvas" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>"></div>
+  <div class="container js-container" data-desc="<%= @column_info['full_name'] %>" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>">
+    <div class="js-canvas canvas"></div>
     <aside class="stats">
-      <div class="js-properties properties section"></div>
+      <div class="js-description description section"></div>
+      <div class="js-top-list top-list section"></div>
+      <div class="js-inspector inspector section"></div>
       <div class="js-scatter scatter section"></div>
       <div class="js-histogram histogram section"></div>
     </aside>
   </div>
-  <script src="/js/app.js" charset="utf-8"></script>
   <script src="/js/map.js" charset="utf-8"></script>
+  <script src="/js/inspector.js" charset="utf-8"></script>
   <script src="/js/scatter.js" charset="utf-8"></script>
+  <script src="/js/app.js" charset="utf-8"></script>
 </body>
 </html>

@@ -50,6 +50,14 @@ body {
   border-left: 1px solid #e1e1e1;
 }
 
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    .canvas {
+      flex: 3
+    }
+}
+
 /*----------------------------------------------
  * header
  *---------------------------------------------- */
@@ -60,20 +68,6 @@ body {
    display: inline-block;
    font-family: OpenSans;
    font-size: 18px;
- }
-
- .header-subtitle {
-   display: inline-block;
-   margin: 0 0 0 10px;
-   padding: 0;
-   vertical-align: -2px;
-   font-size: 12px;
-   color: #555;
-   font-weight: normal;
-   white-space: nowrap;
-   text-overflow: ellipsis;
-   overflow: hidden;
-   max-width: 80vw;
  }
 
  .hamburger {
@@ -109,12 +103,45 @@ body {
   padding: 0;
 }
 
+.demographics li a {
+  border-right: 6px solid #000;
+}
+
+.demographics li.x00 a {
+  border-right-color: #6E944C;
+}
+
+.demographics li.x01 a {
+  border-right-color: #3D9977;
+}
+
+.demographics li.x02 a {
+  border-right-color: #3796A0;
+}
+
+.demographics li.x03 a {
+  border-right-color: #758AB1;
+}
+
+.demographics li.x04 a {
+  border-right-color: #AF79A1;
+}
+
+.demographics li.x05 a {
+  border-right-color: #CD6D7A;
+}
+
 .demographic-link {
   display: block;
   text-decoration: none;
   color: #fff;
   padding: 10px;
   border-bottom: 1px solid #3a9d64;
+}
+
+.demographic-link.selected {
+  background-color: #fff;
+  color: #3EA86B;
 }
 
 .demographic-link:hover {
@@ -127,22 +154,33 @@ body {
 }
 
 /*----------------------------------------------
- * stat sidebar
+ * properties
  *---------------------------------------------- */
 
-.properties {
-
+.description {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
 }
 
-.properties table {
+.property-list {
   border-collapse: collapse;
   width: 100%;
 }
 
-.properties td {
-  padding: 10px;
+.property-list td, .property-list th {
+  padding: 5px;
   border: 1px solid #e1e1e1;
   border-left: 0;
+  text-alin: left;
+}
+
+.property-list th {
+  text-align: right;
+  width: 1%; /*stupid table tricks dot com */
+}
+
+.top-list .property-list th {
+  text-align: left;
 }
 
 /*----------------------------------------------
@@ -163,10 +201,18 @@ svg {
 
 .counties path {
   fill: #dddcda;
+  shape-rendering: crispedges;
+}
+
+.county-mesh {
+  fill: none;
+  stroke: #fff;
+  stroke-opacity: 0.2;
 }
 
 .states {
   fill: none;
   stroke: #fff;
   stroke-width: 1;
+  shap-rendering: crispedges;
 }
