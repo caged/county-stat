@@ -33,6 +33,17 @@
   function loadMetricsForTableAndColumn(table, column) {
     d3.csv('/csv/' + table + '/' + column + '.csv', function(data) {
       cstat.dispatch.statchange(data)
+    d3.csv('/csv/' + table + '/' + column + '.csv', typeify, function(data) {
     })
+  }
+
+  function typeify(row) {
+    var keys = Object.keys(row)
+    keys.forEach(function(k) {
+      var val = row[k]
+      if(!isNaN(val)) row[k] = +val
+    })
+
+    return row
   }
 })()
