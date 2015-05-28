@@ -3,7 +3,7 @@ cstat.dispatch.on('statchange.description', function(data, table, column, desc) 
 })
 
 // Render top list of geographics for the selected metric
-cstat.dispatch.on('statchange.metadata', function(data, table, column, desc) {
+cstat.dispatch.on('statchange.top-list', function(data, table, column, desc) {
   var el = d3.select('.js-top-list')
 
   var topdata = data
