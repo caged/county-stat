@@ -21,10 +21,8 @@ body {
 }
 
 .sidebar {
-  position: fixed;
-  left: -315px;
-  top: 52px;
-  bottom: 0;
+  flex: 1;
+  transform: translate3d(-335px, 0, 0);
   background: #3EA86B;
   overflow-y: scroll;
   border-right: 1px solid #328756;
@@ -46,8 +44,8 @@ body {
 .stats {
   flex: 1;
   height: 100vh;
-  background: #ececec;
-  border-left: 1px solid #e1e1e1;
+  background: #e5e4e2;
+  border-left: 1px solid #d2d0cc;
 }
 
 @media
@@ -93,8 +91,8 @@ body {
 
 .sidebar.expanded {
   visibility: visible;
-  -webkit-transform: translate3d(315px, 0, 0);
-  transform: translate3d(315px, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .demographics {
@@ -150,19 +148,20 @@ body {
 
 .details {
   overflow: hidden;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 /*----------------------------------------------
  * properties
  *---------------------------------------------- */
 .section {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #d5d3cf;
   min-height: 100px;
 }
 
 .description {
   padding: 20px;
+  min-height: 0;
 }
 
 .property-list {
@@ -173,7 +172,7 @@ body {
 
 .property-list td, .property-list th {
   padding: 5px;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #d9d8d4;
   border-left: 0;
   text-alin: left;
 }
@@ -194,9 +193,44 @@ body {
 }
 
 /*----------------------------------------------
+ * histogram
+ *---------------------------------------------- */
+.histogram {
+  padding: 20px 0;
+}
+
+.histogram svg {
+  margin: 0 auto;
+}
+
+.histogram .domain {
+  fill: none;
+  stroke: #ccc;
+  shape-rendering: crispedges;
+}
+
+.histogram text {
+  font-size: 11px;
+  fill: #555;
+}
+
+.histogram rect {
+  shape-rendering: crispedges;
+  fill: #9e270d;
+}
+
+.histogram .count {
+  font-size: 9px;
+  text-anchor: middle;
+}
+
+.histogram .tick line {
+  stroke: #ccc;
+}
+
+/*----------------------------------------------
  * map
  *---------------------------------------------- */
-
 
 svg {
   display: block;
@@ -206,7 +240,6 @@ svg {
   fill: #fff;
   stroke: #fff;
   stroke-width: 1;
-  shape-rendering: crispedges;
 }
 
 .counties path {
@@ -217,12 +250,12 @@ svg {
 .county-mesh {
   fill: none;
   stroke: #fff;
-  stroke-opacity: 0.2;
+  stroke-opacity: 0.1;
 }
 
 .states {
   fill: none;
   stroke: #fff;
   stroke-width: 1;
-  shap-rendering: crispedges;
+  stroke-opacity: 0.3;
 }
