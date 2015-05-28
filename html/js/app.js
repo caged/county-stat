@@ -7,7 +7,6 @@
       column = container.attr('data-column'),
       desc   = container.attr('data-desc')
 
-
   // Load map data
   d3.json('/us-10m.json', function load(err, data) {
     cstat.dispatch.geodata(err, data)
@@ -21,6 +20,7 @@
     })
   })
 
+  // Reload map data when using back and forward buttons
   d3.select(window).on('popstate', function() {
     let state = d3.event.state,
         table = state.table,
