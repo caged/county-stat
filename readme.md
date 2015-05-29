@@ -1,8 +1,8 @@
-Experiment in progress. Inspector for US Census county geographic data.  Brave soul?
+Inspector for US Census county data. Experimental work-in-progress.
 
 #### Requirements
 
-I've only tested this on a Mac running OSX Yosemite.
+I've only tested this on a Mac running OS X Yosemite.
 
 * gdal with filegdb support (`brew install gdal --enable-unsupported --with-postgresql`) or [osgeo4mac](https://github.com/OSGeo/homebrew-osgeo4mac#how-do-i-install-these-formulae)
 * postgis
