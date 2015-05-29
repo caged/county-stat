@@ -2,7 +2,7 @@
 
 cstat.dispatch.on('statchange.histogram', function(data, metric) {
   let el     = d3.select('.js-histogram').html(''),
-      margin = { top: 0, right: 20, bottom: 20, left: 20 },
+      margin = { top: 40, right: 20, bottom: 20, left: 20 },
       width  = parseFloat(el.style('width')) - margin.left - margin.right,
       height = parseFloat(el.style('height')) - margin.top - margin.bottom,
       values = data.map(function(d) { return d.per_100k })
@@ -27,6 +27,12 @@ cstat.dispatch.on('statchange.histogram', function(data, metric) {
   let xax = d3.svg.axis()
     .scale(x)
     .tickFormat(d3.format((',s')))
+
+  vis.append('text')
+    .attr('class', 'title')
+    .attr('x', width / 2)
+    .attr('y', -20)
+    .text('Per 100k County Distribution')
 
   let bar = vis.selectAll('.bar')
     .data(bindata)
