@@ -17,7 +17,7 @@ cstat.dispatch.on('geodata', function(err, us) {
 
   let color = d3.scale.linear()
       // .range(['#AD5C6A', '#EFEE69']) // Orange-Red
-      // .range(['#765B7B', '#64CCE8']) // Ice Blue-Purple
+      // .range(['#eee', '#3EA86B']) // Ice Blue-Purple
       .range(['#24573E', '#A6C45E']) // Green
       // .range(['#fff', '#A6C45E'])
       .interpolate(d3.interpolateHcl)
@@ -62,7 +62,7 @@ cstat.dispatch.on('geodata', function(err, us) {
   function rerender(data, metric) {
     let table = metric.table,
         column = metric.column
-        
+
     color.domain(d3.extent(data, function(d) { return +d.per_100k   }))
     alpha.domain(d3.extent(data, function(d) { return +d.population }))
 
