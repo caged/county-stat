@@ -18,7 +18,6 @@ export COUNTY_STAT_DB_PORT=your_db_port_here
 ```
 
 ```
-createdb my_db
 script/import-psql -d my_db
 script/server
 ```
