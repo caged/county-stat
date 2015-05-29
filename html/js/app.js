@@ -19,17 +19,24 @@
   })
 
   d3.select('body').on('keyup', function() {
+    let key = d3.event.keyCode
     // Toggle sidebar
-    if(d3.event.keyCode == 83)
+    if(key == 83)
       d3.select('.js-sidebar').classed('expanded', function(d) {
         return !d3.select(this).classed('expanded')
       })
 
-    if(d3.event.keyCode == 40) {
-      let li = d3.select(d3.select('.selected').node().parentNode),
-          next = li.node().nextElementSibling
+    if(key == 40 || key == 38) {
+      let li     = d3.select(d3.select('.selected').node().parentNode),
+          method = key == 40 ? 'nextElementSibling' : 'previousElementSibling',
+          nextel = d3.select(li.node()[method]).select('a'),
+          metric = metricFromElement(nextel)
 
+      history.pushState(metric, null, '/' + metric.table + '/' + metric.column)
+      loadMetric(metric)
 
+      d3.selectAll('.js-stat-link').classed('selected', false)
+      nextel.classed('selected', true)
     }
   })
 
@@ -46,7 +53,7 @@
     let el = d3.select(this),
         metric = metricFromElement(el)
 
-    history.pushState(metric, "page 2", '/' + metric.table + '/' + metric.column)
+    history.pushState(metric, null, '/' + metric.table + '/' + metric.column)
 
     d3.selectAll('.js-stat-link').classed('selected', false)
     el.classed('selected', true)
