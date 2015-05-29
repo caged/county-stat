@@ -1,3 +1,5 @@
+![choropleth](https://cloud.githubusercontent.com/assets/25/7875908/fac26e98-0577-11e5-89bb-392b99b82c6d.png)
+
 Inspector for US Census county data. Experimental work-in-progress.
 
 #### Requirements
