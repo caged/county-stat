@@ -139,7 +139,7 @@ body {
 
 .demographic-link.selected {
   background-color: #fff;
-  color: #3EA86B;
+  color: #111;
 }
 
 .demographic-link:hover {
