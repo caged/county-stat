@@ -9,8 +9,8 @@ Dotenv.load
 
 DB = PG.connect(dbname: ENV['COUNTY_STAT_DB_NAME'])
 
-POPULATION_COLUMN='b01003e1'
-POPULATION_TABLE='x01_age_and_sex'
+POPULATION_COLUMN = 'b01003e1'
+POPULATION_TABLE = 'x01_age_and_sex'
 
 # DB.type_map_for_queries = PG::BasicTypeMapForQueries.new DB
 set :root, File.join(File.dirname(__FILE__), '..')
