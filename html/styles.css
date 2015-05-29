@@ -259,3 +259,28 @@ svg {
   stroke-width: 1;
   stroke-opacity: 0.3;
 }
+
+.alt .land {
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 1;
+}
+
+.alt .counties path {
+  fill: #dddcda;
+  shape-rendering: crispedges;
+}
+
+.alt .county-mesh {
+  fill: none;
+  stroke-width: 0.5;
+  stroke: #fff;
+  stroke-opacity: 0.5;
+}
+
+.alt .states {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+}
