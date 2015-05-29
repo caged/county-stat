@@ -1,6 +1,6 @@
 'use strict';
 
-cstat.dispatch.on('statchange.histogram', function(data, table, column, desc) {
+cstat.dispatch.on('statchange.histogram', function(data, metric) {
   let el     = d3.select('.js-histogram').html(''),
       margin = { top: 0, right: 20, bottom: 20, left: 20 },
       width  = parseFloat(el.style('width')) - margin.left - margin.right,

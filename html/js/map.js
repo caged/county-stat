@@ -59,7 +59,10 @@ cstat.dispatch.on('geodata', function(err, us) {
     .attr('d', path)
 
 
-  function rerender(data, table, column) {
+  function rerender(data, metric) {
+    let table = metric.table,
+        column = metric.column
+        
     color.domain(d3.extent(data, function(d) { return +d.per_100k   }))
     alpha.domain(d3.extent(data, function(d) { return +d.population }))
 

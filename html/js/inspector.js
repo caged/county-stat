@@ -1,9 +1,9 @@
-cstat.dispatch.on('statchange.description', function(data, table, column, desc) {
-  d3.select('.js-description').text(desc)
+cstat.dispatch.on('statchange.description', function(data, metric) {
+  d3.select('.js-description').text(metric.desc)
 })
 
 // Render top list of geographics for the selected metric
-cstat.dispatch.on('statchange.top-list', function(data, table, column, desc) {
+cstat.dispatch.on('statchange.top-list', function(data, metric) {
   var el = d3.select('.js-top-list')
 
   var topdata = data

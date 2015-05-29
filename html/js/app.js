@@ -3,14 +3,12 @@
 (function() {
 
   let container = d3.select('.js-container'),
-      table  = container.attr('data-table'),
-      column = container.attr('data-column'),
-      desc   = container.attr('data-desc')
+      metric = metricFromElement(container)
 
   // Load map data
   d3.json('/us-10m.json', function load(err, data) {
     cstat.dispatch.geodata(err, data)
-    loadMetricsForTableAndColumn(table, column, desc)
+    loadMetric(metric)
   })
 
   // Sidebar expanding
@@ -21,24 +19,24 @@
   })
 
   d3.select('body').on('keyup', function() {
-    if(d3.event.keyCode == 27)
-      d3.select('.js-sidebar')
-        .classed('expanded', false)
-
+    // Toggle sidebar
     if(d3.event.keyCode == 83)
       d3.select('.js-sidebar').classed('expanded', function(d) {
         return !d3.select(this).classed('expanded')
       })
+
+    if(d3.event.keyCode == 40) {
+      let li = d3.select(d3.select('.selected').node().parentNode),
+          next = li.node().nextElementSibling
+
+
+    }
   })
 
   // Reload map data when using back and forward buttons
   d3.select(window).on('popstate', function() {
-    let state = d3.event.state,
-        table = state.table,
-        column = state.column,
-        desc   = state.desc
-
-    loadMetricsForTableAndColumn(table, column, desc)
+    let state = d3.event.state
+    loadMetric(state)
   })
 
   // Change stats
@@ -46,22 +44,27 @@
     d3.event.preventDefault()
 
     let el = d3.select(this),
-        table = el.attr('data-table'),
-        column = el.attr('data-column'),
-        desc   = el.attr('title')
+        metric = metricFromElement(el)
 
-    let state = { table: table, column: column, desc: desc }
-    history.pushState(state, "page 2", '/' + table + '/' + column)
+    history.pushState(metric, "page 2", '/' + metric.table + '/' + metric.column)
 
     d3.selectAll('.js-stat-link').classed('selected', false)
     el.classed('selected', true)
-    loadMetricsForTableAndColumn(table, column, desc)
+    loadMetric(metric)
   })
 
-  function loadMetricsForTableAndColumn(table, column, desc) {
-    d3.csv('/csv/' + table + '/' + column + '.csv', typeify, function(data) {
-      cstat.dispatch.statchange(data, table, column, desc)
+  function loadMetric(metric) {
+    d3.csv('/csv/' + metric.table + '/' + metric.column + '.csv', typeify, function(data) {
+      cstat.dispatch.statchange(data, metric)
     })
+  }
+
+  function metricFromElement(el) {
+    return {
+      table: el.attr('data-table'),
+      column: el.attr('data-column'),
+      desc: el.attr('data-desc') || el.attr('title')
+    }
   }
 
   function typeify(row) {
