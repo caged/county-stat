@@ -102,7 +102,7 @@ body {
 }
 
 .demographics li a {
-  border-right: 6px solid #000;
+  border-right: 6px solid #2c784c;
 }
 
 .demographics li.x00 a {
@@ -196,7 +196,7 @@ body {
  * histogram
  *---------------------------------------------- */
 .histogram {
-  padding: 20px 0;
+  padding: 0 0 20px 0;
 }
 
 .histogram svg {
@@ -205,18 +205,22 @@ body {
 
 .histogram .domain {
   fill: none;
-  stroke: #ccc;
+  stroke: #aaa;
   shape-rendering: crispedges;
 }
 
+.histogram .title {
+  text-anchor: middle;
+}
+
 .histogram text {
-  font-size: 11px;
+  font-size: 10px;
   fill: #555;
 }
 
 .histogram rect {
   shape-rendering: crispedges;
-  fill: #9e270d;
+  fill: #469FCA;
 }
 
 .histogram .count {
@@ -224,8 +228,13 @@ body {
   text-anchor: middle;
 }
 
+.histogram .tick text {
+  font-size: 10px;
+}
+
 .histogram .tick line {
-  stroke: #ccc;
+  stroke: #aaa;
+  shape-rendering: crispedges;
 }
 
 /*----------------------------------------------
