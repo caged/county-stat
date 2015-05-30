@@ -5,9 +5,10 @@
   <meta charset="utf-8">
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="/js/simple_statistics.js"></script>
   <script>
     window.cstat = {
-      dispatch: d3.dispatch('statchange', 'geodata', 'geohover', 'geoselect')
+      dispatch: d3.dispatch('statchange', 'geodata', 'geohover', 'geoselect', 'propchange')
     }
   </script>
   <link rel="stylesheet" href="/styles.css" charset="utf-8">
@@ -18,7 +19,7 @@
     <h1 class="header-title">County Stat</h1>
   </header>
   <div class="container js-container" data-desc="<%= @column_info['full_name'] %>" data-table="<%= params[:table] %>" data-column="<%= params[:column] %>">
-    <aside class="sidebar js-sidebar">
+    <aside class="sidebar js-sidebar expanded">
       <ol class="demographics">
         <% @demographics.each do |demographic| %>
         <li class="<%= demographic['table_name'][0..2] %>">
@@ -33,7 +34,24 @@
         <% end %>
       </ol>
     </aside>
-    <div class="js-canvas canvas"></div>
+    <div class="js-canvas canvas">
+      <div class="map-ui">
+        <form class="grid js-map-properties map-properties">
+          <div class="grid-item">
+            <span class="label">Classification:</span>
+            <select class="js-cluster themed-select" name="cluster">
+              <option value="headtail">Head/Tail Breaks</option>
+              <option value="jenks">Jenks Natural Breaks</option>
+              <option value="quantile">Quantile</option>
+              <option value="linear">Linear HCL</option>
+            </select>
+          </div>
+          <div class="grid-item">
+            Color range
+          </div>
+        </form>
+      </div>
+    </div>
     <aside class="stats">
       <div class="js-description description section"></div>
       <div class="js-histogram histogram section"></div>
@@ -42,6 +60,7 @@
       <div class="js-scatter scatter section"></div>
     </aside>
   </div>
+  <script src="/js/cluster.js" charset="utf-8"></script>
   <script src="/js/map.js" charset="utf-8"></script>
   <script src="/js/inspector.js" charset="utf-8"></script>
   <script src="/js/histogram.js" charset="utf-8"></script>

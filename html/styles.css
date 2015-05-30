@@ -11,6 +11,33 @@ body {
 }
 
 /*----------------------------------------------
+ * grid
+ *---------------------------------------------- */
+.grid {
+  display: flex;
+}
+
+.grid-item {
+  flex: 1;
+  padding: 20px;
+  border-bottom: 1px solid #deddd9;
+  border-right: 1px solid #deddd9;
+}
+
+.grid-item:last-child {
+  border-right: none;
+}
+
+/*----------------------------------------------
+ * forms
+ *---------------------------------------------- */
+
+
+.map-ui .label {
+  font-weight: bold;
+}
+
+/*----------------------------------------------
  * =structure
  *---------------------------------------------- */
 
@@ -23,6 +50,7 @@ body {
 .sidebar {
   flex: 1;
   transform: translate3d(-335px, 0, 0);
+  max-width: 335px;
   background: #3EA86B;
   overflow-y: scroll;
   border-right: 1px solid #328756;
@@ -91,7 +119,8 @@ body {
 
 .sidebar.expanded {
   visibility: visible;
-  -webkit-transform: translate3d(0, 0, 0);
+  width: 335px;
+  /* -webkit-transform: translate3d(0, 0, 0); */
   transform: translate3d(0, 0, 0);
 }
 
@@ -143,7 +172,7 @@ body {
 }
 
 .demographic-link:hover {
-  color: #E8D151;
+  color: #111;
 }
 
 .details {
