@@ -16,11 +16,23 @@ cstat.dispatch.on('geodata', function(err, us) {
     .projection(projection)
 
   let color = d3.scale.linear()
-      // .range(['#AD5C6A', '#EFEE69']) // Orange-Red
-      // .range(['#eee', '#3EA86B']) // Ice Blue-Purple
-      .range(['#24573E', '#A6C45E']) // Green
-      // .range(['#fff', '#A6C45E'])
+      .range(['#24573E', '#A6C45E'])
       .interpolate(d3.interpolateHcl)
+
+  let color2 = d3.scale.threshold()
+
+  function colors(count) {
+    var colors = [],
+        hcl = d3.scale.linear()
+          .domain([0, count - 1])
+          .range(['#24573E', '#A6C45E'])
+          .interpolate(d3.interpolateHcl)
+
+    for (var i = 0; i < count; i++)
+      colors.push(hcl(i))
+
+    return colors
+  }
 
   let alpha = d3.scale.linear()
     .range([0.8, 1])
@@ -58,24 +70,38 @@ cstat.dispatch.on('geodata', function(err, us) {
     .attr('class', 'states')
     .attr('d', path)
 
-
   function rerender(data, metric) {
     let table = metric.table,
-        column = metric.column
+        column = metric.column,
+        values = data.map(function(d) { return d.per_100k }),
+        props = { cluster: 'headtail' }
 
-    color.domain(d3.extent(data, function(d) { return +d.per_100k   }))
-    alpha.domain(d3.extent(data, function(d) { return +d.population }))
-
-    var cdata = d3.nest()
+    let cdata = d3.nest()
       .key(function(d) { return +d.id })
       .rollup(function(d) { return d[0] })
       .map(data)
 
-    countypaths
-      .filter(function(d) { return d })
-      .datum(function(d) { return cdata[+d.id] })
-      .style('fill', function(d) { return d && color(+d.per_100k) })
-      // .style('fill-opacity', function(d) { return d && alpha(+d.population) })
-      .on('mouseover', function(d) { cstat.dispatch.geohover(this, d, data) })
+    cstat.dispatch.on('propchange.draw', function(p) {
+      props = p
+      draw()
+    })
+
+    function draw() {
+      let cluster = props.cluster,
+          domain = cstat.cluster[cluster](values, 9)
+
+      color2
+        .domain(domain)
+        .range(colors(domain.length + 1))
+
+      countypaths
+        .filter(function(d) { return d })
+        .datum(function(d) { return cdata[+d.id] })
+        .style('fill', function(d) { return d && color2(d.per_100k) })
+        // .style('fill-opacity', function(d) { return d && alpha(+d.population) })
+        .on('mouseover', function(d) { cstat.dispatch.geohover(this, d, data) })
+    }
+
+    draw()
   }
 })
