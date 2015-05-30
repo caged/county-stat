@@ -7,7 +7,7 @@ cstat.dispatch.on('statchange.top-list', function(data, metric) {
   var el = d3.select('.js-top-list')
 
   var topdata = data
-    .filter(function(d) { return d.population >= 5000 })
+    // .filter(function(d) { return d.population >= 5000 })
     .sort(function(a, b) { return d3.descending(a.per_100k, b.per_100k)})
     .slice(0, 10)
 
