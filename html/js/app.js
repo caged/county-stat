@@ -18,6 +18,26 @@
     })
   })
 
+  // Map property changes
+  d3.select('.js-map-properties input, .js-map-properties select').on('change', function() {
+    let input = d3.event.target,
+        form = d3.event.target,
+        obj = {}
+
+    while(form.tagName != 'FORM') {
+      form = form.parentNode
+    }
+
+    if(input.tagName == 'SELECT') {
+      obj[input.name] = input.options[input.selectedIndex].value
+    }
+
+    cstat.dispatch.propchange(obj)
+  })
+
+  // Keyboard shortcuts
+  // s - toggle sidebar
+  // up/down arrow - navigate sidebar
   d3.select('body').on('keyup', function() {
     let key = d3.event.keyCode
     // Toggle sidebar
