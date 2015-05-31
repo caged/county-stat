@@ -36,9 +36,6 @@ cstat.dispatch.on('geodata', function(err, us) {
     return colors
   }
 
-  let alpha = d3.scale.linear()
-    .range([0.8, 1])
-
   let vis = el.append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.bottom + margin.top)
@@ -99,7 +96,6 @@ cstat.dispatch.on('geodata', function(err, us) {
         .filter(function(d) { return d })
         .datum(function(d) { return cdata[+d.id] })
         .style('fill', function(d) { return d && color2(d.per_100k) })
-        // .style('fill-opacity', function(d) { return d && alpha(+d.population) })
         .on('mouseover', function(d) { cstat.dispatch.geohover(this, d, data) })
     }
 
