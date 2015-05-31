@@ -23,19 +23,6 @@ cstat.dispatch.on('geodata', function(err, us) {
 
   let color2 = d3.scale.threshold()
 
-  function colors(count) {
-    var colors = [],
-        hcl = d3.scale.linear()
-          .domain([0, count - 1])
-          .range(['#24573E', '#A6C45E'])
-          .interpolate(d3.interpolateHcl)
-
-    for (var i = 0; i < count; i++)
-      colors.push(hcl(i))
-
-    return colors
-  }
-
   let vis = el.append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.bottom + margin.top)
@@ -102,3 +89,19 @@ cstat.dispatch.on('geodata', function(err, us) {
     draw()
   }
 })
+
+
+// Given a set of colors, generate a linear scale of
+// HCL colors
+function colors(count) {
+  var colors = [],
+      hcl = d3.scale.linear()
+        .domain([0, count - 1])
+        .range(['#24573E', '#A6C45E'])
+        .interpolate(d3.interpolateHcl)
+
+  for (var i = 0; i < count; i++)
+    colors.push(hcl(i))
+
+  return colors
+}
