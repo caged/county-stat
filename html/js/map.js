@@ -17,11 +17,7 @@ cstat.dispatch.on('geodata', function(err, us) {
   let path = d3.geo.path()
     .projection(projection)
 
-  let color = d3.scale.linear()
-      .range(['#24573E', '#A6C45E'])
-      .interpolate(d3.interpolateHcl)
-
-  let color2 = d3.scale.threshold()
+  let color = d3.scale.threshold()
 
   let vis = el.append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -75,14 +71,14 @@ cstat.dispatch.on('geodata', function(err, us) {
       let cluster = props.cluster,
           domain = cstat.cluster[cluster](values, 10)
 
-      color2
+      color
         .domain(domain)
         .range(colors(domain.length + 1))
 
       countypaths
         .filter(function(d) { return d })
         .datum(function(d) { return cdata[+d.id] })
-        .style('fill', function(d) { return d && color2(d.per_100k) })
+        .style('fill', function(d) { return d && color(d.per_100k) })
         .on('mouseover', function(d) { cstat.dispatch.geohover(this, d, data) })
     }
 
