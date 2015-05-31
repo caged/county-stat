@@ -3,8 +3,11 @@
 (function() {
   let cluster = cstat.cluster = {}
 
-  cluster.quantize = function(data, bins) {
-    return d3.scale.quantize().range(bins)
+  cluster.quantiles = function(data, bins) {
+    return d3.scale.quantile()
+      .range(d3.range(bins + 1))
+      .domain(d3.extent(data))
+      .quantiles()
   }
 
   cluster.jenks = function(data, bins) {
