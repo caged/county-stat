@@ -1,5 +1,7 @@
 'use strict';
 
+let props = { cluster: 'headtail' }
+
 cstat.dispatch.on('geodata', function(err, us) {
   cstat.dispatch.on('statchange.rerender', rerender)
 
@@ -73,8 +75,7 @@ cstat.dispatch.on('geodata', function(err, us) {
   function rerender(data, metric) {
     let table = metric.table,
         column = metric.column,
-        values = data.map(function(d) { return d.per_100k }),
-        props = { cluster: 'headtail' }
+        values = data.map(function(d) { return d.per_100k })
 
     let cdata = d3.nest()
       .key(function(d) { return +d.id })
