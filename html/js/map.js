@@ -88,7 +88,7 @@ cstat.dispatch.on('geodata', function(err, us) {
 
     function draw() {
       let cluster = props.cluster,
-          domain = cstat.cluster[cluster](values, 9)
+          domain = cstat.cluster[cluster](values, 10)
 
       color2
         .domain(domain)
