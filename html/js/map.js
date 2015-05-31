@@ -8,7 +8,8 @@ cstat.dispatch.on('geodata', function(err, us) {
   let el     = d3.select('.js-canvas'),
       margin = { top: 0, right: 0, bottom: 0, left: 0 },
       width  = parseFloat(el.style('width')) - margin.left - margin.right,
-      height = parseFloat(el.style('height')) - margin.top - margin.bottom
+      height = parseFloat(el.style('height')) - margin.top - margin.bottom,
+      legendWidth = Math.max(width / 2, 700)
 
   let projection = d3.geo.albersUsa()
     .scale(width + (width / 4))
@@ -18,6 +19,14 @@ cstat.dispatch.on('geodata', function(err, us) {
     .projection(projection)
 
   let color = d3.scale.threshold()
+
+  let x = d3.scale.linear()
+    .range([0, legendWidth])
+
+  let xax = d3.svg.axis()
+    .tickPadding(10)
+    .tickFormat(d3.format('.3s'))
+    .scale(x)
 
   let vis = el.append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -52,6 +61,11 @@ cstat.dispatch.on('geodata', function(err, us) {
     .attr('class', 'states')
     .attr('d', path)
 
+  console.log(width);
+  let legend = vis.append('g')
+    .attr('class', 'legend')
+    .attr('transform', 'translate(' + ((width - x.range()[1]) / 2) + ',' + 40 + ')')
+
   function rerender(data, metric) {
     let table = metric.table,
         column = metric.column,
@@ -71,6 +85,9 @@ cstat.dispatch.on('geodata', function(err, us) {
       let cluster = props.cluster,
           domain = cstat.cluster[cluster](values, 10)
 
+      x.domain([0, d3.max(domain)])
+      xax.tickValues(domain)
+
       color
         .domain(domain)
         .range(colors(domain.length + 1))
@@ -80,6 +97,16 @@ cstat.dispatch.on('geodata', function(err, us) {
         .datum(function(d) { return cdata[+d.id] })
         .style('fill', function(d) { return d && color(d.per_100k) })
         .on('mouseover', function(d) { cstat.dispatch.geohover(this, d, data) })
+
+      legend.selectAll('rect')
+        .data(legendData(color, x))
+      .enter().append('rect')
+        .attr('x', function(d) { return d.x0 })
+        .attr('height', 10)
+        .attr('width', function(d) { return d.x1 - d.x0 })
+        .style('fill', function(d) { return d.color })
+
+      legend.call(xax)
     }
 
     draw()
@@ -100,4 +127,15 @@ function colors(count) {
     colors.push(hcl(i))
 
   return colors
+}
+
+function legendData(color, x) {
+  let domain = color.domain()
+  return color.range().map(function(d, i) {
+    return {
+      x0: i ? x(domain[i - 1]) : x.range()[0],
+      x1: i < domain.length ? x(domain[i]) : x.range()[1],
+      color: d
+    };
+  })
 }
