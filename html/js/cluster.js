@@ -12,7 +12,7 @@
 
   cluster.jenks = function(data, bins) {
     data = data.sort(function(a, b) { return a - b })
-    return ss.jenks(data, bins || 9)
+    return ss.jenks(data, (bins - 1) || 9)
   }
 
   cluster.headtail = function(data) {
