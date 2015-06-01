@@ -23,10 +23,13 @@ cstat.dispatch.on('geodata', function(err, us) {
   let x = d3.scale.linear()
     .range([0, legendWidth])
 
+  let x2 = d3.scale.ordinal()
+    .rangeRoundBands([0, legendWidth])
+
   let xax = d3.svg.axis()
     .tickPadding(10)
     .tickFormat(d3.format('.3s'))
-    .scale(x)
+    .scale(x2)
 
   let vis = el.append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -61,10 +64,15 @@ cstat.dispatch.on('geodata', function(err, us) {
     .attr('class', 'states')
     .attr('d', path)
 
-  console.log(width);
   let legend = vis.append('g')
     .attr('class', 'legend')
     .attr('transform', 'translate(' + ((width - x.range()[1]) / 2) + ',' + 40 + ')')
+
+  legend.append('text')
+    .attr('class', 'legend-title')
+    .attr('y', -10)
+    .attr('x', legendWidth / 2)
+    .text('Per 100k people')
 
   function rerender(data, metric) {
     let table = metric.table,
@@ -85,12 +93,17 @@ cstat.dispatch.on('geodata', function(err, us) {
       let cluster = props.cluster,
           domain = cstat.cluster[cluster](values, 10)
 
+      // Increase the last value by one so it fits in the threshold
+      // domain
+      domain[domain.length - 1] += 1
+
       x.domain([0, d3.max(domain)])
+      x2.domain(domain)
       xax.tickValues(domain)
 
       color
         .domain(domain)
-        .range(colors(domain.length + 1))
+        .range(colors(domain.length))
 
       countypaths
         .filter(function(d) { return d })
@@ -99,11 +112,11 @@ cstat.dispatch.on('geodata', function(err, us) {
         .on('mouseover', function(d) { cstat.dispatch.geohover(this, d, data) })
 
       legend.selectAll('rect')
-        .data(legendData(color, x))
+        .data(legendData(color, x2))
       .enter().append('rect')
-        .attr('x', function(d) { return d.x0 })
+        .attr('x', function(d) { return d.x })
         .attr('height', 10)
-        .attr('width', function(d) { return d.x1 - d.x0 })
+        .attr('width', x2.rangeBand())
         .style('fill', function(d) { return d.color })
 
       legend.call(xax)
@@ -112,7 +125,6 @@ cstat.dispatch.on('geodata', function(err, us) {
     draw()
   }
 })
-
 
 // Given a set of colors, generate a linear scale of
 // HCL colors
@@ -131,11 +143,8 @@ function colors(count) {
 
 function legendData(color, x) {
   let domain = color.domain()
+
   return color.range().map(function(d, i) {
-    return {
-      x0: i ? x(domain[i - 1]) : x.range()[0],
-      x1: i < domain.length ? x(domain[i]) : x.range()[1],
-      color: d
-    };
+    return { x: x(domain[i]), color: d }
   })
 }

@@ -42,8 +42,13 @@ body {
  *---------------------------------------------- */
 
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #999;
   background: #fff;
 }
 
@@ -62,6 +67,7 @@ body {
 .container {
   display: flex;
   height: 100vh;
+  margin-top: 52px;
 }
 
 .canvas {
@@ -328,4 +334,9 @@ svg {
  *---------------------------------------------- */
 .legend .domain {
   display: none;
+}
+
+.legend-title {
+  font-weight: bold;
+  text-anchor: middle;
 }
