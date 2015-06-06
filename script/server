@@ -17,8 +17,8 @@ set :root, File.join(File.dirname(__FILE__), '..')
 set :views, Proc.new { File.join(root, 'html') }
 set :public_folder, Proc.new { File.join(root, 'html') }
 
-def demographics
-  @demographics ||= DB.exec <<-STR
+def demographics_results
+  @demographics_results ||= DB.exec <<-STR
     select
       table_name,
       column_name,
@@ -35,8 +35,14 @@ def demographics
   STR
 end
 
+def demographics
+  @demographics ||= demographics_results.group_by do |row|
+    row['table_name'].sub(/^x[0-9]+_/, '')
+  end
+end
+
 def subjects
-  @demographics.map { |d| d['table_name'] }.uniq.map do |s|
+  demographics_results.map { |d| d['table_name'] }.uniq.map do |s|
     { key: s, value: s.sub!(/^x[0-9]+_/, '').split('_').join(' ').capitalize }
   end
 end
