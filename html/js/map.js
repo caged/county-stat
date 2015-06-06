@@ -132,6 +132,7 @@ function colors(count) {
   var colors = [],
       hcl = d3.scale.linear()
         .domain([0, count - 1])
+        // .range(['#24573E', '#A6C45E'])
         .range(['#24573E', '#A6C45E'])
         .interpolate(d3.interpolateHcl)
 
