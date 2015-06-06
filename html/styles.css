@@ -58,7 +58,6 @@ body {
   max-width: 335px;
   background: #3EA86B;
   overflow-y: scroll;
-  border-right: 1px solid #328756;
   visibility: hidden;
   -webkit-transition: all 0.3s;
   transition: all .3s;
@@ -130,54 +129,57 @@ body {
   transform: translate3d(0, 0, 0);
 }
 
-.demographics {
+.metric-name {
+  margin: 0;
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.metrics {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.demographics li a {
-  border-right: 6px solid #2c784c;
+.m0 {
+  background-color: #6E944C;
 }
 
-.demographics li.x00 a {
-  border-right-color: #6E944C;
+.m1 {
+  background-color: #3D9977;
 }
 
-.demographics li.x01 a {
-  border-right-color: #3D9977;
+.m2 {
+  background-color: #3796A0;
 }
 
-.demographics li.x02 a {
-  border-right-color: #3796A0;
+.m3 {
+  background-color: #758AB1;
 }
 
-.demographics li.x03 a {
-  border-right-color: #758AB1;
+.m4 {
+  background-color: #AF79A1;
 }
 
-.demographics li.x04 a {
-  border-right-color: #AF79A1;
+.m5 {
+  background-color: #CD6D7A;
 }
 
-.demographics li.x05 a {
-  border-right-color: #CD6D7A;
-}
-
-.demographic-link {
+.metric-link {
   display: block;
   text-decoration: none;
   color: #fff;
   padding: 10px;
-  border-bottom: 1px solid #3a9d64;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.demographic-link.selected {
+.metric-link.selected {
   background-color: #fff;
   color: #111;
 }
 
-.demographic-link:hover {
+.metric-link:hover {
   color: #111;
 }
 

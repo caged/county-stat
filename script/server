@@ -17,8 +17,8 @@ set :root, File.join(File.dirname(__FILE__), '..')
 set :views, Proc.new { File.join(root, 'html') }
 set :public_folder, Proc.new { File.join(root, 'html') }
 
-def demographics
-  @demographics ||= DB.exec <<-STR
+def demographics_results
+  @demographics_results ||= DB.exec <<-STR
     select
       table_name,
       column_name,
@@ -29,9 +29,22 @@ def demographics
     where
       table_schema = 'public' and
       table_name like 'x%' and
+      table_name not in('x00_counts', 'x98_unweighted_housing_unit_sample', 'x99_imputation') and
       lower(full_name) not like '%margin of error%'
     order by 1,2
   STR
+end
+
+def demographics
+  @demographics ||= demographics_results.group_by do |row|
+    row['table_name'].sub(/^x[0-9]+_/, '')
+  end
+end
+
+def subjects
+  demographics_results.map { |d| d['table_name'] }.uniq.map do |s|
+    { key: s, value: s.sub!(/^x[0-9]+_/, '').split('_').join(' ').capitalize }
+  end
 end
 
 def query_for(table, column, normalize = true)
@@ -64,12 +77,14 @@ get '/' do
   params[:column] ||= 'b00002e1'
   @column_info = column_info(params[:column])
   @demographics = demographics
+  @subjects = subjects
   erb :index
 end
 
 get '/:table/:column' do
   @column_info = column_info(params[:column])
   @demographics = demographics
+  @subjects = subjects
   erb :index
 end
 

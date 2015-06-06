@@ -18,6 +18,14 @@
     })
   })
 
+  // Navigate to demographic subject
+  d3.select('.js-demographics').on('change', function() {
+    let input = d3.event.target,
+        val = input.options[input.selectedIndex].value
+
+    d3.select('#' + val).node().scrollIntoView()
+  })
+
   // Map property changes
   d3.select('.js-map-properties input, .js-map-properties select').on('change', function() {
     let input = d3.event.target,
