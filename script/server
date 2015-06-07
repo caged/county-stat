@@ -51,7 +51,7 @@ def query_for(table, column, normalize = true)
   table = DB.escape_string(table)
   column = DB.escape_string(column)
 
-  query = "select g.geoid as id, g.statefp, g.name, coalesce(x.#{column}, 0) as value, "
+  query = "select g.geoid as id, g.statefp, g.name, coalesce(x.#{column}::numeric, 0) as value, "
   query += "(select #{POPULATION_COLUMN} from #{POPULATION_TABLE} where #{POPULATION_TABLE}.geoid = g.geoid_data limit 1) as population"
 
   if normalize
